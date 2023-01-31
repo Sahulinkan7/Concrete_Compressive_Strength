@@ -29,11 +29,41 @@ class Configuration:
             return training_pipeline_config
         except Exception as e:
             raise ConcreteException(e,sys) from e
+
+
     def get_data_ingestion_config(self)->DataIngestionConfig:
         try:
-            pass
+            artifact_dir=self.trainig_pipeline_config.artifact_dir
+
+            data_ingestion_artifact_dir=os.path.join(artifact_dir,
+                                                    DATA_INGESTION_ARTIFACT_DIR_NAME_KEY,
+                                                    self.time_stamp)
+
+            data_ingestion_info=self.config_info[DATA_INGESTION_CONFIG_KEY]
+            dataset_download_url=data_ingestion_info[DATA_INGESTION_DATASET_DOWNLOAD_URL_KEY]
+
+            raw_data_dir=os.path.join(data_ingestion_artifact_dir,
+                                    data_ingestion_info[DATA_INGESTION_RAW_DATA_DIR_NAME_KEY])
+
+            ingested_data_dir=os.path.join(data_ingestion_artifact_dir,
+                                            data_ingestion_info[DATA_INGESTION_INGESTED_DIR_NAME_KEY])                        
+            ingested_train_dir=os.path.join(ingested_data_dir,
+                                            data_ingestion_info[DATA_INGESTION_INGESTED_TRAIN_DIR_NAME_KEY])
+            ingested_test_dir=os.path.join(ingested_data_dir,
+                                            data_ingestion_info[DATA_INGESTION_INGESTED_TEST_DIR_NAME_KEY])
+
+            data_ingestion_config=DataIngestionConfig(
+                dataset_download_url=dataset_download_url,
+                raw_data_dir=raw_data_dir,
+                ingested_train_dir=ingested_train_dir,
+                ingested_test_dir=ingested_test_dir
+            )
+            logging.info(f"data ingestion config : {data_ingestion_config}")
+            return data_ingestion_config
+
         except Exception as e:
             raise ConcreteException(e,sys) from e
+            
     def get_data_validation_config(self):
         pass
     def get_data_transformation_config(self):

@@ -7,6 +7,7 @@ def main():
 
     c=Configuration(config_file_path=r"config/config.yaml",current_time_stamp=CURRENT_TIME_STAMP)
     print(c.get_training_pipeline_config())
+    print(c.get_data_ingestion_config())
 
 
 main()

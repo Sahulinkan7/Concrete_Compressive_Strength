@@ -25,4 +25,7 @@ class ConcreteException(Exception):
         return error_message
 
     def __str__(self):
-        return self.error_
+        return self.error_message
+
+    def __repr__(self):
+        return ConcreteException.__name__.str()
