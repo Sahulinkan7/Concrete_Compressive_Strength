@@ -1,1 +1,8 @@
 pyYaml
+Flask
+sklearn
+pandas
+numpy
+xlrd
+xlwt
+-e .
