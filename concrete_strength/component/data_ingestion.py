@@ -34,6 +34,29 @@ class DataIngestion:
         except Exception as e:
             raise ConcreteException(e,sys) from e
 
+    @staticmethod
+    def columns_rename(data_frame:pd.DataFrame)->pd.DataFrame:
+        try:
+            column_new_name=[]
+            for i in data_frame.columns:
+                if "(kg in a m^3 mixture)" in i:
+                    i=i.replace("(kg in a m^3 mixture)","")[:-14].lower().replace(" ","_")
+                    if i[-1]=="_":
+                        i=i.replace("_","")
+                if "(MPa, megapascals) " in i:
+                    i=i.replace("(MPa, megapascals) ","").lower().replace(" ","_")
+                if "(day)" in i:
+                    i=i.replace(" (day)","").lower()
+                column_new_name.append(i)
+
+            logging.info(f" columns names before : {data_frame.columns}")
+            data_frame.columns=column_new_name
+            logging.info(f" columns name after rename : {data_frame.columns}")
+
+            return data_frame
+        except Exception as e:
+            raise ConcreteException(e,sys) from e
+
     def split_data_as_train_test(self)->DataIngestionArtifact:
         try:
             raw_data_dir=self.data_ingestion_config.raw_data_dir
@@ -44,8 +67,10 @@ class DataIngestion:
 
             logging.info(f"Reading csv file  [{concrete_file_path}]")
             concrete_data_frame=pd.read_excel(concrete_file_path)
+
+            concrete_data_frame= DataIngestion.columns_rename(concrete_data_frame)
             
-            concrete_data_frame['cement_cat']=pd.cut(concrete_data_frame['Cement (component 1)(kg in a m^3 mixture)'],
+            concrete_data_frame['cement_cat']=pd.cut(concrete_data_frame['cement'],
                                                     bins=[100,190,280,370,460,np.inf],
                                                     labels=[1,2,3,4,5])
             
