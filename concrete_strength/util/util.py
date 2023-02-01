@@ -14,3 +14,17 @@ def read_yaml_file(file_path:str)->dict:
             return yaml_content
     except Exception as e:
         raise ConcreteException(e,sys) from e
+
+
+def write_yaml_file(file_path:str,data:dict=None):
+    """
+    write content into yaml file
+    file_path: destination file
+    data: dictionary content
+    """
+    try:
+        with open(file_path,"w") as yaml_file:
+            if data is not None:
+                yaml.dump(data,yaml_file)
+    except Exception as e:
+        raise ConcreteException(e,sys) from e
