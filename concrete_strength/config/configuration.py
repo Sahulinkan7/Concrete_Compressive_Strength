@@ -116,7 +116,11 @@ class Configuration:
         except Exception as e:
             raise ConcreteException(e,sys) from e
     def get_model_trainer_config(self):
-        pass
+        try:
+            artifact_dir=self.trainig_pipeline_config.artifact_dir
+            
+        except Exception as e:
+            raise ConcreteException(e,sys) from e
     def get_model_evaluation_config(self):
         pass
     def get_model_pusher_config(self):
