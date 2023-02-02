@@ -3,7 +3,8 @@ from concrete_strength.logger import logging
 import os,sys
 from concrete_strength.util.util import read_yaml_file
 from concrete_strength.constant import *
-from concrete_strength.entity.config_entity import TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig
+from concrete_strength.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,
+                                                    DataValidationConfig,DataTransformationConfig)
 
 class Configuration:
     def __init__(self,config_file_path=CONFIG_FILE_PATH,
@@ -71,14 +72,14 @@ class Configuration:
                                                         DATA_VALIDATION_ARTIFACT_DIR_NAME_KEY,
                                                         self.time_stamp)
 
-            data_validation_config=self.config_info[DATA_VALIDATION_CONFIG_KEY]
+            data_validation_info=self.config_info[DATA_VALIDATION_CONFIG_KEY]
 
             schema_file_path=os.path.join(ROOT_DIR,
-                                            data_validation_config[DATA_VALIDATION_SCHEMA_DIR_KEY],
-                                            data_validation_config[DATA_VALIDATION_SCHEMA_FILE_NAME_KEY])
+                                            data_validation_info[DATA_VALIDATION_SCHEMA_DIR_KEY],
+                                            data_validation_info[DATA_VALIDATION_SCHEMA_FILE_NAME_KEY])
 
             report_file_path=os.path.join(data_validation_artifact_dir,
-                                            data_validation_config[DATA_VALIDATION_REPORT_FILE_NAME_KEY])
+                                            data_validation_info[DATA_VALIDATION_REPORT_FILE_NAME_KEY])
 
             data_validation_config=DataValidationConfig(schema_file_path=schema_file_path,
                                                         report_file_path=report_file_path)
@@ -87,8 +88,33 @@ class Configuration:
             
         except Exception as e:
             raise ConcreteException(e,sys) from e
-    def get_data_transformation_config(self):
-        pass
+    def get_data_transformation_config(self)->DataTransformationConfig:
+        try:
+            artifact_dir=self.trainig_pipeline_config.artifact_dir
+            data_transformation_artifact_dir=os.path.join(artifact_dir,
+                                                            DATA_TRANSFORMATION_ARTIFACT_DIR_NAME_KEY,
+                                                            self.time_stamp)
+            data_transformation_info=self.config_info[DATA_TRANSFORMATION_CONFIG_KEY]
+
+            transformed_train_dir=os.path.join(data_transformation_artifact_dir,
+                                                    data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_DIR_KEY],
+                                                    data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_TRAIN_DIR_KEY])
+
+            transformed_test_dir=os.path.join(data_transformation_artifact_dir,
+                                                    data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_DIR_KEY],
+                                                    data_transformation_info[DATA_TRANSFORMATION_TRANSFORMED_TEST_DIR_KEY])
+            preprocessed_object_dir=os.path.join(data_transformation_artifact_dir,
+                                                data_transformation_info[DATA_TRANSFORMATION_PREPROCESSED_DIR_KEY],
+                                                data_transformation_info[DATA_TRANSFORMATION_PREPROCESSED_OBJECT_FILE_NAME_KEY])
+
+            data_transformation_config=DataTransformationConfig(transformed_train_dir=transformed_train_dir,
+                                                                transformed_test_dir=transformed_test_dir,
+                                                                preprocessed_object_file_path=preprocessed_object_dir)
+            logging.info(f" data transformation config : {data_transformation_config}")
+            return data_transformation_config   
+
+        except Exception as e:
+            raise ConcreteException(e,sys) from e
     def get_model_trainer_config(self):
         pass
     def get_model_evaluation_config(self):
