@@ -19,3 +19,14 @@ model_selection:
     class: RandomForestRegressor
     module: sklearn.ensemble
     params:
+      min_samples_leaf: 3
+    search_param_grid:
+      min_samples_leaf:
+        - 6
+      n_estimators:
+        - 100
+        - 200
+        - 300
+      criterion:
+        - mse
+        - mae

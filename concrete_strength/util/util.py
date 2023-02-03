@@ -6,6 +6,16 @@ import numpy as np
 import pandas as pd
 import dill
 
+def load_object(file_path:str):
+    """
+    file_path:str file path 
+    """
+    try:
+        with open(file_path,"rb") as file_obj:
+            return dill.load(file_obj)
+    except Exception as e:
+        raise ConcreteException(e,sys) from e
+
 def save_object(file_path:str,obj:object):
     """
     file_path: destination to save the object
@@ -30,6 +40,18 @@ def save_numpy_array_data(file_path:str,array:np.array):
         os.makedirs(dir_path,exist_ok=True)
         with open(file_path,"wb") as file_obj:
             np.save(file_obj,array)
+    except Exception as e:
+        raise ConcreteException(e,sys) from e
+
+def load_numpy_array_data(file_path:str)->np.array:
+    """
+    file_path: str location of file to load
+    return : np.array data
+    """
+
+    try:
+        with open(file_path,"rb") as file_obj:
+            return np.load(file_obj)
     except Exception as e:
         raise ConcreteException(e,sys) from e
 

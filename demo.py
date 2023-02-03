@@ -4,6 +4,7 @@ from concrete_strength.constant import *
 from concrete_strength.component.data_ingestion import DataIngestion
 from concrete_strength.component.data_validation import DataValidation
 from concrete_strength.component.data_transformation import DataTransformation
+from concrete_strength.component.model_trainer import ModelTrainer
 
 
 def main():
@@ -19,6 +20,8 @@ def main():
     tf=t.initiate_data_transformation()
     print(t.data_validation_artifact)
     print(tf)
+    tr=ModelTrainer(data_transformation_artifact=tf,model_trainer_config=c.get_model_trainer_config())
+    print(tr.initiate_model_trainer())
     
 
 

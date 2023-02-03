@@ -52,3 +52,22 @@ DATA_TRANSFORMATION_PREPROCESSED_DIR_KEY="preprocessing_dir"
 DATA_TRANSFORMATION_PREPROCESSED_OBJECT_FILE_NAME_KEY="preprocessed_object_file_name"
 DATA_TRANSFORMATION_ARTIFACT_DIR_NAME_KEY="data_transformation"
 
+#model trainer related variables
+
+MODEL_TRAINER_CONFIG_KEY="model_trainer_config"
+MODEL_TRAINER_TRAINED_MODEL_DIR_KEY="trained_model_dir"
+MODEL_TRAINER_MODEL_FILE_NAME_KEY="model_file_name"
+MODEL_TRAINER_BASE_ACCURACY_KEY="base_accuracy"
+MODEL_TRAINER_MODEL_CONFIG_DIR_KEY="model_config_dir"
+MODEL_TRAINER_MODEL_CONFIG_FILE_NAME_KEY="model_config_file_name"
+MODEL_TRAINER_ARTIFACT_DIR_NAME_KEY="model_trainer"
+
+#model factory related variables
+GRID_SEARCH_KEY="grid_search"
+MODULE_KEY="module"
+CLASS_KEY="class"
+PARAM_KEY="params"
+MODEL_SELECTION_KEY="model_selection"
+SEARCH_PARAM_GRID_KEY="search_param_grid"
+
+
