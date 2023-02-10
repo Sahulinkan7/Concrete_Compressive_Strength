@@ -5,6 +5,7 @@ import yaml
 import numpy as np
 import pandas as pd
 import dill
+from concrete_strength.constant import *
 
 def load_object(file_path:str):
     """
@@ -75,9 +76,31 @@ def write_yaml_file(file_path:str,data:dict=None):
     data: dictionary content
     """
     try:
+        os.makedirs(os.path.dirname(file_path),exist_ok=True)
         with open(file_path,"w") as yaml_file:
             if data is not None:
                 yaml.dump(data,yaml_file)
+    except Exception as e:
+        raise ConcreteException(e,sys) from e
+
+
+def load_data(file_path:str,schema_file_path:str)->pd.DataFrame:
+    try:
+        dataset_schema=read_yaml_file(file_path=schema_file_path)
+        schema=dataset_schema[DATASET_SCHEMA_COLUMNS_KEY]
+
+        dataframe=pd.read_excel(file_path)
+
+        error_message=""
+
+        for column in dataframe.columns:
+            if column in list(schema.keys()):
+                dataframe[column].astype(schema[column])
+            else:
+                error_message=f"{error_message}"
+        if len(error_message)>0:
+            raise Exception(error_message)
+        return dataframe
     except Exception as e:
         raise ConcreteException(e,sys) from e
 

@@ -5,7 +5,7 @@ from concrete_strength.util.util import read_yaml_file
 from concrete_strength.constant import *
 from concrete_strength.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,
                                                     DataValidationConfig,DataTransformationConfig,
-                                                    ModelTrainerConfig)
+                                                    ModelTrainerConfig,ModelEvaluationConfig)
 
 class Configuration:
     def __init__(self,config_file_path=CONFIG_FILE_PATH,
@@ -139,7 +139,25 @@ class Configuration:
             return model_trainer_config
         except Exception as e:
             raise ConcreteException(e,sys) from e
-    def get_model_evaluation_config(self):
-        pass
+    def get_model_evaluation_config(self)->ModelEvaluationConfig:
+        try:
+            artifact_dir=self.trainig_pipeline_config.artifact_dir
+
+            model_evaluation_artifact_dir=os.path.join(artifact_dir,
+                                                        MODEL_EVALUATION_ARTIFACT_DIR_KEY)
+            model_evaluation_info=self.config_info[MODEL_EVALUATION_CONFIG_KEY]
+            model_evaluation_file_path=os.path.join(model_evaluation_artifact_dir,model_evaluation_info[MODEL_EVALUATION_FILE_NAME_KEY])
+
+            model_evaluation_config=ModelEvaluationConfig(
+                model_evaluation_file_path=model_evaluation_file_path,
+                time_stamp=self.time_stamp
+            )
+
+            logging.info(f"Model Evaluation config : {model_evaluation_config}")
+            return model_evaluation_config
+
+        except Exception as e:
+            raise ConcreteException(e,sys) from e
+
     def get_model_pusher_config(self):
         pass

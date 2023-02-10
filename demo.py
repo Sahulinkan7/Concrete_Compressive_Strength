@@ -5,6 +5,7 @@ from concrete_strength.component.data_ingestion import DataIngestion
 from concrete_strength.component.data_validation import DataValidation
 from concrete_strength.component.data_transformation import DataTransformation
 from concrete_strength.component.model_trainer import ModelTrainer
+from concrete_strength.component.model_evaluation import ModelEvaluation
 
 
 def main():
@@ -14,14 +15,23 @@ def main():
     ingestion_artifact=d.initiate_data_ingestion()
     print(f"--ingestion artifact--: {ingestion_artifact}")
     v=DataValidation(data_ingestion_artifact=ingestion_artifact,data_validation_config=c.get_data_validation_config())
+    vart=v.initiate_data_validation()
+    print(f"--validation artifact--{vart}")
     t=DataTransformation(data_ingestion_artifact=ingestion_artifact,
-                        data_validation_artifact=v.initiate_data_validation(),
+                        data_validation_artifact=vart,
                         data_transformation_config=c.get_data_transformation_config())
     tf=t.initiate_data_transformation()
-    print(t.data_validation_artifact)
-    print(tf)
+    print(f"--data transformation artifact--{tf}")
     tr=ModelTrainer(data_transformation_artifact=tf,model_trainer_config=c.get_model_trainer_config())
-    print(tr.initiate_model_trainer())
+    trart=tr.initiate_model_trainer()
+    print(f"--model trainer artifact-- {trart}")
+
+    ev=ModelEvaluation(model_evaluation_config=c.get_model_evaluation_config(),
+                        data_ingestion_artifact=ingestion_artifact,
+                        data_validation_artifact=vart,
+                        model_trainer_artifact=trart)
+    evart=ev.initiate_model_evaluation()
+    print(f"--model evaluation artifact-- {evart}")
     
 
 

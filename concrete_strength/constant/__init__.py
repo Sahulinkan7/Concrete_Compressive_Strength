@@ -38,7 +38,7 @@ DATA_VALIDATION_ARTIFACT_DIR_NAME_KEY="data_validation"
 #schema related variables
 
 
-DATASET_SCHEMA_COLUMN_KEY="columns"
+DATASET_SCHEMA_COLUMNS_KEY="columns"
 DATASET_SCHEMA_NUMERICAL_COLUMNS_KEY="numerical_columns"
 DATASET_SCHEMA_TARGET_COLUMN_KEY="target_column"
 
@@ -70,4 +70,12 @@ PARAM_KEY="params"
 MODEL_SELECTION_KEY="model_selection"
 SEARCH_PARAM_GRID_KEY="search_param_grid"
 
+#modelevaluation related variables
+MODEL_EVALUATION_CONFIG_KEY="model_evaluation_config"
+MODEL_EVALUATION_FILE_NAME_KEY="model_evaluation_file_name"
+MODEL_EVALUATION_ARTIFACT_DIR_KEY="model_evaluation"
+
+BEST_MODEL_KEY="best_model"
+MODEL_PATH_KEY="model_path"
+HISTORY_KEY="history"
 
