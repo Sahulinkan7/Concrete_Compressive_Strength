@@ -79,3 +79,7 @@ BEST_MODEL_KEY="best_model"
 MODEL_PATH_KEY="model_path"
 HISTORY_KEY="history"
 
+#model pusher related variables
+MODEL_PUSHER_CONFIG_KEY="model_pusher_config"
+MODEL_PUSHER_MODEL_EXPORT_DIR_KEY="model_export_dir"
+

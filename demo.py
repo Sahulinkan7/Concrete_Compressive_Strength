@@ -6,6 +6,7 @@ from concrete_strength.component.data_validation import DataValidation
 from concrete_strength.component.data_transformation import DataTransformation
 from concrete_strength.component.model_trainer import ModelTrainer
 from concrete_strength.component.model_evaluation import ModelEvaluation
+from concrete_strength.component.model_pusher import ModelPusher
 
 
 def main():
@@ -32,6 +33,10 @@ def main():
                         model_trainer_artifact=trart)
     evart=ev.initiate_model_evaluation()
     print(f"--model evaluation artifact-- {evart}")
+    
+    mp=ModelPusher(model_evaluation_artifact=evart,model_pusher_config=c.get_model_pusher_config())
+    mpart=mp.initiate_model_pusher()
+    print(f"---Model Pusher Artifact ---{mpart}")
     
 
 

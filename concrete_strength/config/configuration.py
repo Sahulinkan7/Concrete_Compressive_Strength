@@ -5,7 +5,8 @@ from concrete_strength.util.util import read_yaml_file
 from concrete_strength.constant import *
 from concrete_strength.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,
                                                     DataValidationConfig,DataTransformationConfig,
-                                                    ModelTrainerConfig,ModelEvaluationConfig)
+                                                    ModelTrainerConfig,ModelEvaluationConfig,
+                                                    ModelPusherConfig)
 
 class Configuration:
     def __init__(self,config_file_path=CONFIG_FILE_PATH,
@@ -159,5 +160,14 @@ class Configuration:
         except Exception as e:
             raise ConcreteException(e,sys) from e
 
-    def get_model_pusher_config(self):
-        pass
+    def get_model_pusher_config(self)->ModelPusherConfig:
+        try:
+            time_stamp=f"{datetime.now().strftime('%Y%m%d%H%M%S')}"
+            model_pusher_config_info=self.config_info[MODEL_PUSHER_CONFIG_KEY]
+
+            export_dir_path=os.path.join(ROOT_DIR,model_pusher_config_info[MODEL_PUSHER_MODEL_EXPORT_DIR_KEY],time_stamp)
+            model_pusher_config=ModelPusherConfig(export_dir_path=export_dir_path)
+            logging.info(f"Model Pusher Config {model_pusher_config}")
+            return model_pusher_config
+        except Exception as e:
+             raise ConcreteException(e,sys) from e
